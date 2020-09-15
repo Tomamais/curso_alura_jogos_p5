@@ -1,0 +1,3 @@
+#ignorando o básico
+.DS_Store
+node_modules
