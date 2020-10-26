@@ -2,6 +2,8 @@ let imagemCenarion;
 let imagemPersonagem;
 let imagemInimigo;
 let imagemInimigoGrande;
+let imagemInimigoVoador;
+let imagemGameOver;
 
 let cenario;
 let somDoJogo;
@@ -9,6 +11,7 @@ let somDoPulo;
 let personagem;
 let inimigo;
 let inimigoGrande;
+let inimigoVoador;
 
 const matrizPersonagem = [
   [0, 0], 
@@ -91,22 +94,52 @@ const matrizInimigoGrande = [
   [800, 2000],
 ];
 
+const matrizInimigoVoador = [
+  [0,0],
+  [200, 0],
+  [400, 0],
+  [0, 150],
+  [200, 150],
+  [400, 150],
+  [0, 300],
+  [200, 300],
+  [400, 300],
+  [0, 450],
+  [200, 450],
+  [400, 450],
+  [0, 600],
+  [200, 600],
+  [400, 600],
+  [0, 750],
+];
+
+const inimigos = [];
+
 function preload() {
   imagemCenario = loadImage('imagens/cenario/floresta.png');
+  imagemGameOver = loadImage('imagens/assets/game-over.png');
   imagemPersonagem = loadImage('imagens/personagem/correndo.png');
   imagemInimigo = loadImage('imagens/inimigos/gotinha.png');
   imagemInimigoGrande = loadImage('imagens/inimigos/troll.png');
+  imagemInimigoVoador = loadImage('imagens/inimigos/gotinha-voadora.png');
   somDoJogo = loadSound('sons/trilha_jogo.mp3');
   somDoPulo = loadSound('sons/somPulo.mp3');
 }
 
 function setup() {
-  frameRate(40);
   createCanvas(windowWidth, windowHeight);
+  pontuacao = new Pontuacao();
   cenario = new Cenario(imagemCenario, 3);
   personagem = new Personagem(matrizPersonagem, imagemPersonagem, 0, 30, 110, 135, 220, 270);
-  inimigo = new Inimigo(matrizInimigo, imagemInimigo, width - 52, 30, 52, 52, 104, 104);
-  inimigoGrande = new Inimigo(matrizInimigoGrande, imagemInimigoGrande, width * 2, 0, 200, 200, 400, 400);
+  const inimigo = new Inimigo(matrizInimigo, imagemInimigo, width - 52, 30, 52, 52, 104, 104, 10, 200);
+  const inimigoGrande = new Inimigo(matrizInimigoGrande, imagemInimigoGrande, width , 0, 200, 200, 400, 400, 10, 2500)
+  const inimigoVoador = new Inimigo(matrizInimigoVoador, imagemInimigoVoador, width - 52, 200, 100, 75, 200, 150, 10, 1500);
+  
+  inimigos.push(inimigo);
+  inimigos.push(inimigoGrande);
+  inimigos.push(inimigoVoador);
+
+  frameRate(40);
   somDoJogo.loop();
 }
 
@@ -121,18 +154,21 @@ function draw() {
   // as imagens são criadas na ordem, por isso o cenário vem primeiro
   cenario.exibe();
   cenario.move();
+
+  pontuacao.exibe();
+  pontuacao.adicionarPonto();
   
   personagem.exibe();
   personagem.aplicaGravidade();
-  
-  inimigo.exibe();
-  inimigo.move();
-  
-  inimigoGrande.exibe();
-  inimigoGrande.move();
-  
-  if(personagem.estaColidindo(inimigo)) {
-    console.log('pá!');
-    noLoop(); // isso pára o loop do jogo (menos o som :])
-  }
+
+  inimigos.forEach(inimigo => {
+    inimigo.exibe();
+    inimigo.move();
+    
+    if(personagem.estaColidindo(inimigo)) {
+        // console.log('pá!');
+        image(imagemGameOver, width/2 - 200, height/3)
+        noLoop(); // isso pára o loop do jogo (menos o som :])
+      }
+  })
 }
