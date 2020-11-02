@@ -60,9 +60,12 @@ class Jogo {
 
   keyPressed(key) {
     if (key === "ArrowUp") {
-      personagem.pula();
-      somDoPulo.play();
+      this._pula();
     }
+  }
+
+  touch() {
+    this._pula();
   }
 
   draw() {
@@ -95,5 +98,10 @@ class Jogo {
       image(imagemGameOver, width / 2 - 200, height / 3);
       noLoop(); // isso pára o loop do jogo (menos o som :])
     }
+  }
+
+  _pula() {
+    personagem.pula();
+    somDoPulo.play();
   }
 }

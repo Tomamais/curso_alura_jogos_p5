@@ -18,6 +18,10 @@ function keyPressed() {
   jogo.keyPressed(key);
 }
 
+function touchStarted() {
+  if (jogo) jogo.touch();
+}
+
 function draw() {
   cenas[cenaAtual].draw();
 }
