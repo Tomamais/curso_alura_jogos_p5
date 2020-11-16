@@ -1,0 +1,17 @@
+{
+  "name": "aula_3",
+  "version": "1.0.0",
+  "description": "Aula 3 do curso do alura",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server src -p 5000 -c -1",
+    "watch": "browser-sync start --config bs-config.js"
+  },
+  "keywords": [],
+  "author": "Os gajos gamers",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^12.3",
+    "browser-sync": "^2.26.12"
+  }
+}
